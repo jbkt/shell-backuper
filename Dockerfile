@@ -19,8 +19,8 @@ WORKDIR "/"
 # These are configurable from the environment or with -e to docker run
 # --------------------------------------------------------------------
 
-# List of local folders to backup. This list must be separated by ":" (colons).
-# Example: '/dir1:/dir2:/dir3'
+# List of local folders to backup. This list must be separated by "|" (pipes).
+# Example: '/dir1|/dir2|/dir3'
 ENV RESTIC_DATA="/data"
 
 # List of remote repositories (BackBlaze B2 buckets or any other supported) to

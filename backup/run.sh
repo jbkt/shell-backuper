@@ -4,10 +4,10 @@ source $(dirname ${0})/functions.sh
 source ${CONFIG_FILENAME}
 
 # Checks all environment variables and prints values
-IFS=':' read -a RESTIC_DATA <<< "${RESTIC_DATA}" #colon-separated to array
+IFS='|' read -a RESTIC_DATA <<< "${RESTIC_DATA}" #colon-separated to array
 check_array_env RESTIC_DATA
 
-IFS=':' read -a RESTIC_REPO <<< "${RESTIC_REPO}" #colon-separated to array
+IFS='|' read -a RESTIC_REPO <<< "${RESTIC_REPO}" #colon-separated to array
 check_array_env RESTIC_REPO
 
 if [ "${#RESTIC_DATA[@]}" != "${#RESTIC_REPO[@]}" ]; then
