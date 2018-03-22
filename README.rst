@@ -65,12 +65,12 @@ password is ``test``. The last 10 backups are kept.
 Debug
 -----
 
-To enter your container execute::
+To enter your container, execute::
 
   $ docker exec -ti backup-test /bin/sh
 
 
-Now you can use restic_.
+From this point you can use restic_ and check things for yourself.
 
 
 .. Your references go here:
