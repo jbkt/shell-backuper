@@ -38,7 +38,7 @@ ENV RESTIC_PASSWORD=""
 
 # Cron daemon settings for launching the backup job script (backup/run.sh)
 # The current settings will back-up every day at 1AM (UTC) / 2AM (CET)
-ENV BACKUP_CRON="0 1 \* \* \*"
+ENV BACKUP_CRON="0 1 * * *"
 
 # Global Options for restic (like --limit-download or --limit-upload)
 # Do NOT use the --repo flag here - we'll append it ourselves. These are for
