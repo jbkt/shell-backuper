@@ -56,6 +56,7 @@ following command::
 
   $ mkdir data #fill-in with toy-data to "backup"
   $ mkdir repo #don't put anything
+  $ restic -r repo init  #use password "test" or change file test.env
   $ docker run -t --env-file test.env -v `pwd`/data:/data -v `pwd`/repo:/repo anjos/backuper:latest
 
 If you don't change the values in ``test.env``, the cron job will run every

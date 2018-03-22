@@ -6,7 +6,7 @@ SCRIPTS_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 # datetime prefix for logging
 log_datetime() {
-	echo "($(date +%T.%3N))"
+	echo "($(date +'%Y-%m-%d %H:%M:%S'))"
 }
 
 # Functions for coloring echo commands
@@ -100,30 +100,45 @@ run_cmd() {
 
 
 # Given the number of seconds, change to days, hours, minutes and seconds
+# $1: number of seconds ellapsed
 human_time() {
-  echo $(date -ud "@$1" +'$((%s/3600/24)) days %H hours %M minutes %S seconds')
+  local T=$1
+  local D=$((T/60/60/24))
+  local H=$((T/60/60%24))
+  local M=$((T/60%60))
+  local S=$((T%60))
+
+  # creates string
+  local value=""
+  [[ $D > 0 ]] && value="$D days"
+  if [[ $H > 0 ]]; then
+    if [ -n "${value}" ]; then value="${value}, "; fi
+    value="${value}$H hours"
+  fi
+  if [[ $M > 0 ]]; then
+    if [ -n "${value}" ]; then value="${value}, "; fi
+    value="${value}$M minutes"
+  fi
+  if [[ $S > 0 ]]; then
+    if [ -n "${value}" ]; then value="${value}, "; fi
+    value="${value}$S seconds"
+  fi
+
+  echo "${value}"
+}
+
+CONFIG_FILENAME=${SCRIPTS_DIR}/config.sh
+
+# Truncates the configuration file
+truncate_config() {
+  log_info "Truncating contents of ${CONFIG_FILENAME}..."
+  echo "# Created at $(date)" > ${CONFIG_FILENAME}
 }
 
 
-# Checks all environment variables and prints values
-IFS=':' read -a RESTIC_DATA <<< "${RESTIC_DATA}" #colon-separated to array
-check_array_env RESTIC_DATA
-
-IFS=':' read -a RESTIC_REPO <<< "${RESTIC_REPO}" #colon-separated to array
-check_array_env RESTIC_REPO
-
-if [ "${#RESTIC_DATA[@]}" != "${#RESTIC_REPO[@]}" ]; then
-  log_error "Number of local folders (${#RESTIC_DATA[@]}) does not match remote repositories (${#RESTIC_REPO[@]}). Aborting..."
-  exit 1
-fi
-
-check_pass B2_ACCOUNT_ID
-export B2_ACCOUNT_ID
-check_pass B2_ACCOUNT_KEY
-export B2_ACCOUNT_KEY
-check_pass RESTIC_PASSWORD
-
-check_env BACKUP_CRON
-check_env RESTIC_OPTIONS
-check_env RESTIC_BACKUP_OPTIONS
-check_env RESTIC_FORGET_OPTIONS
+# Saves the content of a variable to a source-able config file
+# $1: name of the variable to save
+save_to_config() {
+  log_info "Storing contents of \${${1}} to ${CONFIG_FILENAME}..."
+  echo "export ${1}=\"${!1}\"" >> ${CONFIG_FILENAME}
+}

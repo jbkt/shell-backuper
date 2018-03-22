@@ -45,13 +45,21 @@ ENV BACKUP_CRON="0 1 * * *"
 # extra stuff you may want to pass to restic itself (look at global options)
 ENV RESTIC_OPTIONS=""
 
-# Options for backup (like --exclude)
+# Options for backup (like --exclude). Do **not** set "--hostname", we'll do
+# this from the value of the environment variable RESTIC_HOSTNAME
 ENV RESTIC_BACKUP_OPTIONS=""
+
+# Captures the value restic will use for the hostname - Important: restic
+# backups are organized by hostname, so you must set it from the commandline to
+# get this right. Changing the hostname will have implications on the kept
+# snapshots (during a "forget") as that is done per hostname.
+ENV RESTIC_HOSTNAME="myhost"
 
 # Options for forgetting and prunning the backup repository. This option will
 # keep last seven days, the last 8 weeks, last 12 months and last 3 years worth
 # of backups. If you decrease this at any time, consequences will happen at the
-# next time the backup command will run
+# next time the backup command will run. Do **not** set "--host", we'll do
+# this from the value of the environment variable RESTIC_HOSTNAME
 ENV RESTIC_FORGET_OPTIONS="--prune --keep-daily 7 --keep-weekly 9 --keep-monthly 13 --keep-yearly 3"
 
 ENTRYPOINT ["/root/entrypoint.sh"]
