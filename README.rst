@@ -51,15 +51,15 @@ You can build the container yourself using the following command::
 Tests
 -----
 
-Edit the file ``test.env`` to your liking. Test the container with the
+Edit the file ``envs/test.env`` to your liking. Test the container with the
 following command::
 
   $ mkdir data #fill-in with toy-data to "backup"
   $ mkdir repo #don't put anything
-  $ restic -r repo init  #use password "test" or change file test.env
-  $ docker run -t --env-file test.env -v `pwd`/data:/data -v `pwd`/repo:/repo anjos/backuper:latest
+  $ restic -r repo init  #use password "test" or change file envs/test.env
+  $ docker run -t --env-file envs/test.env -v `pwd`/data:/data -v `pwd`/repo:/repo anjos/backuper:latest
 
-If you don't change the values in ``test.env``, the cron job will run every
+If you don't change the values in ``envs/test.env``, the cron job will run every
 minute. Use the contents of ``./data`` to add/remove contents simulating your
 usage. Backups are stored in ``./backup`` using a simple file backend. The
 password is ``test``. The last 10 backups are kept.
@@ -68,9 +68,9 @@ password is ``test``. The last 10 backups are kept.
 Debug
 -----
 
-To enter your container, execute::
+To start a new container, execute::
 
-  $ docker run -ti --env-file test.env -v `pwd`/data:/data -v `pwd`/repo:/repo --entrypoint=/bin/bash anjos/backuper:latest '-e'
+  $ docker run -ti --env-file envs/test.env -v `pwd`/data:/data -v `pwd`/repo:/repo --entrypoint=/bin/bash anjos/backuper:latest '-e'
 
 
 From this point you can use restic_ and check things for yourself.
