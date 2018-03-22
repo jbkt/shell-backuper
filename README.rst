@@ -1,5 +1,5 @@
-.. image:: https://img.shields.io/docker/pulls/anjos/restic.svg
-   :target: https://hub.docker.com/r/anjos/restic/
+.. image:: https://img.shields.io/docker/pulls/anjos/backuper.svg
+   :target: https://hub.docker.com/r/anjos/backuper/
 
 =================================
  Restic_ Backup Docker Container
@@ -45,7 +45,7 @@ Builds
 
 You can build the container yourself using the following command::
 
-  $ docker build --rm -t anjos/restic:latest .
+  $ docker build --rm -t anjos/backuper:latest .
 
 
 Tests
@@ -54,7 +54,7 @@ Tests
 Edit the file ``test.env`` to your liking. Test the container with the
 following command::
 
-  $ docker run -t --env-file test.env -v `pwd`/data:/data -v `pwd`/repo:backup anjos/restic:latest
+  $ docker run -t --env-file test.env -v `pwd`/data:/data -v `pwd`/repo:/repo anjos/backuper:latest
 
 If you don't change the values in ``test.env``, the cron job will run every
 minute. Use the contents of ``./data`` to add/remove contents simulating your
