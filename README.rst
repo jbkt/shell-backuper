@@ -51,18 +51,57 @@ You can build the container yourself using the following command::
 Tests
 -----
 
-Edit the file ``envs/local.env`` to your liking. Test the container with the
-following command::
+I recommend you start running local tests to check your system is sane before
+going for cloud-based setups.
+
+
+Local filesystem
+================
+
+Edit the file ``envs/local.env`` to your liking. Create a data/repo directories
+on your working directory and initialize the restic repository::
 
   $ mkdir data #fill-in with toy-data to "backup"
   $ mkdir repo #don't put anything
   $ restic -r repo init  #use password "test" or change file envs/local.env
+  ...
+
+
+Test the container with the following command::
+
   $ docker run -t --env-file envs/local.env -v `pwd`/data:/data -v `pwd`/repo:/repo anjos/backuper:latest
+
 
 If you don't change the values in ``envs/local.env``, the cron job will run every
 minute. Use the contents of ``./data`` to add/remove contents simulating your
-usage. Backups are stored in ``./backup`` using a simple file backend. The
-password is ``test``. The last 10 backups are kept.
+usage. Backups are stored in ``./repo`` using a simple file backend. The
+password is ``test``. The last 3 backups are kept.
+
+
+Backblaze B2
+============
+
+Backblaze's B2 backup solution provides a free-tier which is useful to run
+quick tests without incurring in cost. Edit the file ``envs/b2.env`` to your
+liking. Create a directory named ``data`` on your working directory that will
+contain your test data to backup. Initialize the B2's bucket::
+
+  $ mkdir data #fill-in with toy-data to "backup"
+  $ B2_ACCOUNT_ID=<set-account-id>
+  $ B2_ACCOUNT_KEY=<set-account-key>
+  $ restic -r 'b2:test' init
+  ...
+
+
+Test the container with the following command::
+
+  $ docker run -t --env-file envs/b2.env -v `pwd`/data:/data -v `pwd`/repo:/repo anjos/backuper:latest
+
+
+If you don't change the values in ``envs/b2.env``, the cron job will run
+every minute. Use the contents of ``./data`` to add/remove contents simulating
+your usage. Backups are stored in ``./backup`` using a simple file backend. The
+password is ``test``. The last 3 backups are kept.
 
 
 Debug
