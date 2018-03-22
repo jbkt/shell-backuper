@@ -87,15 +87,15 @@ liking. Create a directory named ``data`` on your working directory that will
 contain your test data to backup. Initialize the B2's bucket::
 
   $ mkdir data #fill-in with toy-data to "backup"
-  $ B2_ACCOUNT_ID=<set-account-id>
-  $ B2_ACCOUNT_KEY=<set-account-key>
-  $ restic -r 'b2:test' init
+  $ b2 authorized-account <set-account-id> <set-account-key>
+  $ b2 create-bucket test allPrivate
+  $ B2_ACCOUNT_ID=<set-account-id> B2_ACCOUNT_KEY=<set-account-key> restic -r 'b2:test' init
   ...
 
 
 Test the container with the following command::
 
-  $ docker run -t --env-file envs/b2.env -v `pwd`/data:/data -v `pwd`/repo:/repo anjos/backuper:latest
+  $ docker run -t --env-file envs/b2.env -v `pwd`/data:/data anjos/backuper:latest
 
 
 If you don't change the values in ``envs/b2.env``, the cron job will run
@@ -103,6 +103,16 @@ every minute. Use the contents of ``./data`` to add/remove contents simulating
 your usage. Backups are stored in ``./backup`` using a simple file backend. The
 password is ``test``. The last 3 backups are kept.
 
+
+.. note::
+
+   To delete all files in a bucket and then delete the bucket, do::
+
+     $ mkdir empty
+     $ cd empty
+     $ b2 authorize-account ...
+     $ b2 sync --delete . b2://mybucketname
+     $ b2 delete-bucket mybucketname
 
 Debug
 -----
