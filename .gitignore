@@ -1,4 +1,5 @@
 *~
 data/
 repo/
+.DS_Store
 envs/anjos.env
