@@ -30,13 +30,19 @@ log_error() {
 }
 
 
+# Checks just if the variable has non-zero length
+check_zero_length() {
+  if [ -z "${!1}" ]; then
+    log_error "Variable ${1} is zero-length - aborting...";
+    exit 1
+  fi
+}
+
+
 # Checks just if the variable is defined and has non-zero length
 check_defined() {
   if [ -z "${!1+abc}" ]; then
     log_error "Variable ${1} is undefined - aborting...";
-    exit 1
-  elif [ -z "${!1}" ]; then
-    log_error "Variable ${1} is zero-length - aborting...";
     exit 1
   fi
 }

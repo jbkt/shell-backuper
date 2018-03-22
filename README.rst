@@ -54,6 +54,8 @@ Tests
 Edit the file ``test.env`` to your liking. Test the container with the
 following command::
 
+  $ mkdir data #fill-in with toy-data to "backup"
+  $ mkdir repo #don't put anything
   $ docker run -t --env-file test.env -v `pwd`/data:/data -v `pwd`/repo:/repo anjos/backuper:latest
 
 If you don't change the values in ``test.env``, the cron job will run every
@@ -67,7 +69,7 @@ Debug
 
 To enter your container, execute::
 
-  $ docker exec -ti backup-test /bin/sh
+  $ docker run -ti --env-file test.env -v `pwd`/data:/data -v `pwd`/repo:/repo --entrypoint=/bin/bash anjos/backuper:latest '-e'
 
 
 From this point you can use restic_ and check things for yourself.

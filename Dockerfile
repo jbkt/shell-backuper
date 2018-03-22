@@ -13,7 +13,7 @@ RUN RESTIC_VERSION="0.8.3" && \
     \
     touch /var/log/cron.log
 
-COPY backup /
+COPY backup /root
 WORKDIR "/"
 
 # These are configurable from the environment or with -e to docker run
@@ -38,7 +38,7 @@ ENV RESTIC_PASSWORD=""
 
 # Cron daemon settings for launching the backup job script (backup/run.sh)
 # The current settings will back-up every day at 1AM (UTC) / 2AM (CET)
-ENV BACKUP_CRON="0 1 * * *"
+ENV BACKUP_CRON="0 1 \* \* \*"
 
 # Global Options for restic (like --limit-download or --limit-upload)
 # Do NOT use the --repo flag here - we'll append it ourselves. These are for
@@ -54,4 +54,4 @@ ENV RESTIC_BACKUP_OPTIONS=""
 # next time the backup command will run
 ENV RESTIC_FORGET_OPTIONS="--prune --keep-daily 7 --keep-weekly 9 --keep-monthly 13 --keep-yearly 3"
 
-ENTRYPOINT ["/backup/entrypoint.sh"]
+ENTRYPOINT ["/root/entrypoint.sh"]
