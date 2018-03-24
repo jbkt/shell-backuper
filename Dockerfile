@@ -1,10 +1,12 @@
 FROM frolvlad/alpine-glibc:alpine-3.7
 
+COPY backup /root
+
 # Install conda
 RUN RESTIC_VERSION="0.8.3" && \
     RESTIC_SHA256_CHECKSUM="1e9aca80c4f4e263c72a83d4333a9dac0e24b24e1fe11a8dc1d9b38d77883705" && \
     \
-    apk add --no-cache --virtual=.build-dependencies wget ca-certificates bash && \
+    apk add --no-cache --virtual=.build-dependencies wget ca-certificates msmtp bash && \
     \
     wget "https://github.com/restic/restic/releases/download/v${RESTIC_VERSION}/restic_${RESTIC_VERSION}_linux_amd64.bz2" -O /bin/restic.bz2 && \
     echo "${RESTIC_SHA256_CHECKSUM}  /bin/restic.bz2" | sha256sum -c && \
@@ -13,7 +15,6 @@ RUN RESTIC_VERSION="0.8.3" && \
     \
     touch /var/log/cron.log
 
-COPY backup /root
 WORKDIR "/"
 
 # These are configurable from the environment or with -e to docker run
