@@ -3,8 +3,8 @@ FROM frolvlad/alpine-glibc:alpine-3.7
 COPY backup /root
 
 # Install conda
-RUN RESTIC_VERSION="0.8.3" && \
-    RESTIC_SHA256_CHECKSUM="1e9aca80c4f4e263c72a83d4333a9dac0e24b24e1fe11a8dc1d9b38d77883705" && \
+RUN RESTIC_VERSION="0.9.4" && \
+    RESTIC_SHA256_CHECKSUM="0440b6c1c17b58563c729fa133896199406f29356329ca5d048e4d9dcbf7d6fe" && \
     \
     apk add --no-cache --virtual=.build-dependencies wget ca-certificates msmtp bash && \
     \
